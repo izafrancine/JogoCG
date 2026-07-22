@@ -61,6 +61,6 @@ gcc src/main.c -o jogo.exe -IC:/freeglut/include -LC:/freeglut/lib -lfreeglut -l
 ```
 jogo-cg/
 ├── src/main.c       -> código principal
-├── include/          -> headers extras (se precisar)
+├── include/          -> headers extras (ainda não tem nada aqui)
 
 ```
