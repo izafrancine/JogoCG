@@ -20,7 +20,7 @@ void desenharChao(void) {
 
     glPushMatrix();
         glTranslatef(0.0f, -1.0f, 0.0f);
-        glScalef(20.0f, 0.1f, 20.0f);
+        glScalef(60.0f, 0.1f, 60.0f);
         glutSolidCube(1.0f);
     glPopMatrix();
 }

@@ -21,7 +21,7 @@ int winWidth = 800, winHeight = 600;
 
 
 void init(void) {
-    glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
+    glClearColor(0.74f, 0.87f, 0.95f, 1.0f);
     glEnable(GL_DEPTH_TEST); 
 
   
