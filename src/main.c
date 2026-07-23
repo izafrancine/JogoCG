@@ -1,23 +1,22 @@
-/*
- * Jogo 3D: Aqua Thrills (Esqueleto)
- *  -> Objetos 3D com cores/materiais distintos (ver objetos3d.c/.h)
- *  -> Iluminação ambiente, difusa e especular
- *  -> Câmera navegável (WASD + setas)
- *  -> Projeção perspectiva
- *  -> Remoção de superfícies ocultas (depth test)
- */
-
 #include <GL/freeglut.h>
+#include <stdio.h>
 #include <math.h>
 #include "objetos3d.h"
+#include "logica.h"
+#include "obj_loader.h"
+#define PI 3.14159265358979323846f
 
-
-float camX = 0.0f, camY = 3.0f, camZ = 8.0f; 
-float camAngle = 0.0f;                        
-float camSpeed = 0.2f;
-
+float camDistancia = 6.0f; //camera segue o jogador em 3a pessoa
+float camAltura = 3.0f;
 
 int winWidth = 800, winHeight = 600;
+
+extern EstadoDoJogo jogo;
+int teclaW = 0, teclaS = 0, teclaA = 0, teclaD = 0;
+int ultimoTempo = 0;
+
+//importacao de objeto
+extern GLuint listaBarco;
 
 
 void init(void) {
@@ -27,6 +26,7 @@ void init(void) {
   
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    glEnable(GL_NORMALIZE);
 
     // A cor de cada objeto vem do seu material (glMaterialfv em objetos3d.c), então GL_COLOR_MATERIAL não é usado aqui 
     GLfloat luzAmbiente[]  = {0.25f, 0.25f, 0.25f, 1.0f};
@@ -44,8 +44,48 @@ void init(void) {
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
     glShadeModel(GL_SMOOTH);
+
+    inicializarJogo();
+    ultimoTempo = glutGet(GLUT_ELAPSED_TIME);
+    listaBarco = carregarOBJ("barco.obj");
 }
 
+// texto 2D simples na tela 
+void desenharTexto(float x, float y, const char *texto) {
+    glRasterPos2f(x, y);
+    for (const char *c = texto; *c; c++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
+}
+// desenha o texto 2d na tela
+void desenharHUD(void) {
+    glDisable(GL_LIGHTING); //texto nao sofre efeitos da iluminacao
+    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0, winWidth, 0, winHeight);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    char buffer[128];
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    snprintf(buffer, sizeof(buffer), "Moedas: %d/%d   Tempo: %.1fs",jogo.moedasColetadas, MAX_MOEDAS, jogo.tempoDecorrido);
+    desenharTexto(20, winHeight - 30, buffer);
+
+    if (jogo.estado == VITORIA) {
+        desenharTexto(winWidth / 2 - 60, winHeight / 2, "VOCE VENCEU!");
+    }
+
+    glMatrixMode(GL_PROJECTION); 
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST); // ativa novamente o que foi desativado
+    glEnable(GL_LIGHTING);
+}
 
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -53,15 +93,15 @@ void display(void) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-   
-    float lookX = camX + sinf(camAngle);
-    float lookZ = camZ - cosf(camAngle);
-    gluLookAt(camX, camY, camZ,  
-              lookX, camY, lookZ, 
-              0.0f, 1.0f, 0.0f);  
+    float camX = jogo.jogador.x - sinf(jogo.jogador.angulo) * camDistancia;
+    float camZ = jogo.jogador.z + cosf(jogo.jogador.angulo) * camDistancia;
+    float camY = jogo.jogador.y + camAltura;
+
+    gluLookAt(camX, camY, camZ, jogo.jogador.x, jogo.jogador.y + 0.5f, jogo.jogador.z, 0.0f, 1.0f, 0.0f);
 
     desenharChao();
     desenharObjetos();
+    desenharHUD();
 
     glutSwapBuffers();
 }
@@ -75,7 +115,7 @@ void reshape(int w, int h) {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60.0, (double)w / (double)h, 0.1, 100.0);
+    gluPerspective(60.0, (double)w / (double)h, 0.1, 150.0);
 
     glMatrixMode(GL_MODELVIEW);
 }
@@ -83,28 +123,35 @@ void reshape(int w, int h) {
 
 void teclado(unsigned char key, int x, int y) {
     switch (key) {
-        case 'w': camX += camSpeed * sinf(camAngle); camZ -= camSpeed * cosf(camAngle); break;
-        case 's': camX -= camSpeed * sinf(camAngle); camZ += camSpeed * cosf(camAngle); break;
-        case 'a': camAngle -= 0.05f; break;
-        case 'd': camAngle += 0.05f; break;
-        case 27: exit(0); break; // ESC sai 
+        case 'w': teclaW = 1; break;
+        case 's': teclaS = 1; break;
+        case 'a': teclaA = 1; break;
+        case 'd': teclaD = 1; break;
+        case 27: exit(0); break; 
     }
-    glutPostRedisplay();
 }
-
-
-void teclasEspeciais(int key, int x, int y) {
+void tecladoSolto(unsigned char key, int x, int y) {
     switch (key) {
-        case GLUT_KEY_UP:    camY += camSpeed; break;
-        case GLUT_KEY_DOWN:  camY -= camSpeed; break;
-        case GLUT_KEY_LEFT:  camAngle -= 0.05f; break;
-        case GLUT_KEY_RIGHT: camAngle += 0.05f; break;
+        case 'w': teclaW = 0; break;
+        case 's': teclaS = 0; break;
+        case 'a': teclaA = 0; break;
+        case 'd': teclaD = 0; break;
     }
-    glutPostRedisplay();
 }
 
 
 void idle(void) {
+    int tempoAtual = glutGet(GLUT_ELAPSED_TIME);
+    float dt = (tempoAtual - ultimoTempo) / 1000.0f; // ms -> s 
+    ultimoTempo = tempoAtual;
+    if (dt > 0.1f) dt = 0.1f; // evita "saltos" grandes se a janela travar 
+
+    float direcao = 0.0f;
+    if (teclaA) direcao -= 1.0f;
+    if (teclaD) direcao += 1.0f;
+
+    atualizarJogo(dt, teclaW, teclaS, direcao);
+
     glutPostRedisplay();
 }
 
@@ -121,7 +168,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(teclado);
-    glutSpecialFunc(teclasEspeciais);
+    glutKeyboardUpFunc(tecladoSolto);
     glutIdleFunc(idle);
 
     glutMainLoop();
