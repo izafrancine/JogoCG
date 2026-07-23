@@ -59,10 +59,3 @@ jogo-cg/
 
 ```
 
-
-
-=======
-├── include/          -> headers extras (ainda não tem nada aqui)
-
-```
->>>>>>> 98ea9efdc56efb9bc604f62adde1348b5659ac0c
