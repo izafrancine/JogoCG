@@ -1,14 +1,15 @@
 /*
- * Jogo 3D - Esqueleto inicial
- *  - Objetos 3D com cores/materiais distintos
- *  - Iluminação ambiente, difusa e especular
- *  - Câmera navegável (WASD + setas)
- *  - Projeção perspectiva
- *  - Remoção de superfícies ocultas (depth test)
+ * Jogo 3D: Aqua Thrills (Esqueleto)
+ *  -> Objetos 3D com cores/materiais distintos (ver objetos3d.c/.h)
+ *  -> Iluminação ambiente, difusa e especular
+ *  -> Câmera navegável (WASD + setas)
+ *  -> Projeção perspectiva
+ *  -> Remoção de superfícies ocultas (depth test)
  */
 
 #include <GL/freeglut.h>
 #include <math.h>
+#include "objetos3d.h"
 
 
 float camX = 0.0f, camY = 3.0f, camZ = 8.0f; 
@@ -26,10 +27,8 @@ void init(void) {
   
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
-    
+    // A cor de cada objeto vem do seu material (glMaterialfv em objetos3d.c), então GL_COLOR_MATERIAL não é usado aqui 
     GLfloat luzAmbiente[]  = {0.25f, 0.25f, 0.25f, 1.0f};
     GLfloat luzDifusa[]    = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat luzEspecular[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -45,40 +44,6 @@ void init(void) {
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
     glShadeModel(GL_SMOOTH);
-}
-
-
-void aplicarMaterial(GLfloat especular[4], GLfloat brilho) {
-    glMaterialfv(GL_FRONT, GL_SPECULAR, especular);
-    glMaterialf(GL_FRONT, GL_SHININESS, brilho);
-}
-
-
-void desenharChao(void) {
-    GLfloat espNenhum[] = {0.0f, 0.0f, 0.0f, 1.0f};
-    aplicarMaterial(espNenhum, 0.0f);
-    glColor3f(0.3f, 0.3f, 0.35f);
-
-    glPushMatrix();
-        glTranslatef(0.0f, -1.0f, 0.0f);
-        glScalef(20.0f, 0.1f, 20.0f);
-        glutSolidCube(1.0f);
-    glPopMatrix();
-}
-
-
-void desenharObjetos(void) {
-    GLfloat espBaixo[] = {0.2f, 0.2f, 0.2f, 1.0f};
-    GLfloat espAlto[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-
-
-    glPushMatrix();
-        glTranslatef(-2.0f, 0.0f, 0.0f);
-        aplicarMaterial(espBaixo, 10.0f);
-        glColor3f(0.8f, 0.1f, 0.1f);
-        glutSolidCube(1.0f);
-    glPopMatrix();
-
 }
 
 
@@ -122,7 +87,7 @@ void teclado(unsigned char key, int x, int y) {
         case 's': camX -= camSpeed * sinf(camAngle); camZ += camSpeed * cosf(camAngle); break;
         case 'a': camAngle -= 0.05f; break;
         case 'd': camAngle += 0.05f; break;
-        case 27: exit(0); break; /* ESC sai */
+        case 27: exit(0); break; // ESC sai 
     }
     glutPostRedisplay();
 }
@@ -149,7 +114,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(100, 50);
     glutInitWindowSize(winWidth, winHeight);
-    glutCreateWindow("Jogo 3D - Computacao Grafica UFCA");
+    glutCreateWindow("Jogo 3D - Aqua Thrills - Computacao Grafica UFCA");
 
     init();
 
