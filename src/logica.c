@@ -5,7 +5,7 @@
 #define ATRITO 1.5f
 #define VEL_MAXIMA 6.0f
 #define VEL_ROTACAO 2.0f
-#define RAIO_COLISAO 0.10f
+#define RAIO_COLISAO 0.50f
 
 EstadoDoJogo jogo;
 
@@ -110,7 +110,16 @@ void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
             jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z,
             jogo.obstaculos[i].raio)) {
 
-            jogo.jogador.velocidade *= -0.4f;
+            // empurra o barco
+            float dx = jogo.jogador.x - jogo.obstaculos[i].x;
+            float dz = jogo.jogador.z - jogo.obstaculos[i].z;
+            float dist = sqrtf(dx*dx + dz*dz);
+            float sobreposicao = (0.5f + jogo.obstaculos[i].raio) - dist;
+            if (sobreposicao > 0 && dist > 0.0001f) {
+                jogo.jogador.x += (dx / dist) * sobreposicao;
+                jogo.jogador.z += (dz / dist) * sobreposicao;
+                jogo.jogador.velocidade *= -0.4f;
+            }
         }
     }
 

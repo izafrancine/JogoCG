@@ -4,6 +4,9 @@
 #define PI 3.14159265358979323846f
 
 GLuint listaBarco = 0;
+GLuint listaMoeda=0;
+GLuint listaPedra=0;
+
 extern EstadoDoJogo jogo;
 
 void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4],
@@ -16,12 +19,11 @@ void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4],
 
 
 void desenharChao(void) {
-    /* Chão/água - cor acinzentada, opaco, sem brilho especular */
-    GLfloat ambChao[] = {0.15f, 0.15f, 0.17f, 1.0f};
-    GLfloat difChao[] = {0.3f,  0.3f,  0.35f, 1.0f};
-    GLfloat espChao[] = {0.0f,  0.0f,  0.0f,  1.0f};
-    aplicarMaterial(ambChao, difChao, espChao, 0.0f);
-
+    GLfloat ambChao[] = {0.05f, 0.12f, 0.18f, 1.0f};
+    GLfloat difChao[] = {0.1f,  0.35f, 0.55f, 1.0f};
+    GLfloat espChao[] = {0.9f,  0.9f,  0.9f,  1.0f};
+    aplicarMaterial(ambChao, difChao, espChao, 100.0f);
+ 
     glPushMatrix();
         glTranslatef(0.0f, -1.0f, 0.0f);
         glScalef(80.0f, 0.1f, 80.0f);
@@ -37,7 +39,8 @@ void desenharObjetos(void) {
     GLfloat espJogador[] = {0.08f, 0.08f, 0.08f, 1.0f};
     glPushMatrix();
         glTranslatef(jogo.jogador.x, jogo.jogador.y, jogo.jogador.z);
-        glRotatef(jogo.jogador.angulo * 180.0f / PI, 0.0f, 1.0f, 0.0f);
+        glRotatef(-jogo.jogador.angulo * 180.0f / PI, 0.0f, 1.0f, 0.0f); //barco roda com a camera
+        glRotatef(180.0f, 0.0f, 1.0f, 0.0f); //coloca frente que estava invertida
         glScalef(0.25f, 0.25f, 0.25f); 
         aplicarMaterial(ambJogador, difJogador, espJogador, 20.0f);
         glCallList(listaBarco);       
@@ -53,7 +56,8 @@ void desenharObjetos(void) {
         glPushMatrix();
             glTranslatef(jogo.moedas[i].x, jogo.moedas[i].y, jogo.moedas[i].z);
             aplicarMaterial(ambMoedas, difMoedas, espMoedas, 35.0f);
-            glutSolidSphere(jogo.moedas[i].raio, 20, 20);
+            glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+            glCallList(listaMoeda);
         glPopMatrix();
     }
 

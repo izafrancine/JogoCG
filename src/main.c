@@ -15,15 +15,16 @@ extern EstadoDoJogo jogo;
 int teclaW = 0, teclaS = 0, teclaA = 0, teclaD = 0;
 int ultimoTempo = 0;
 
-//importacao de objeto
+//importacao de objeto que sao definidos em objetos#d.c
 extern GLuint listaBarco;
+extern GLuint listaMoeda;
+extern GLuint listaPedra;
 
 
 void init(void) {
     glClearColor(0.74f, 0.87f, 0.95f, 1.0f);
     glEnable(GL_DEPTH_TEST); 
 
-  
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
@@ -48,6 +49,7 @@ void init(void) {
     inicializarJogo();
     ultimoTempo = glutGet(GLUT_ELAPSED_TIME);
     listaBarco = carregarOBJ("barco.obj");
+    listaMoeda = carregarOBJ("moedas.obj");
 }
 
 // texto 2D simples na tela 
@@ -161,7 +163,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(100, 50);
     glutInitWindowSize(winWidth, winHeight);
-    glutCreateWindow("Jogo 3D - Aqua Thrills - Computacao Grafica UFCA");
+    glutCreateWindow("Jogo 3D");
 
     init();
 
