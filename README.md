@@ -15,52 +15,48 @@ Feito em C + OpenGL/FreeGLUT.
 - [ ] Texturas nos objetos
 - [ ] Projeção de sombra dos objetos
 
+
 ## Como compilar (Git Bash + MinGW + FreeGLUT)
 
-Antes de tudo, abra o arquivo `build.sh` e ajuste os caminhos do FreeGLUT para onde ele está instalado na sua máquina:
-
-```
-FREEGLUT_INCLUDE="C:/freeglut/include"
-FREEGLUT_LIB="C:/freeglut/lib"
-```
-
-Depois, no Git Bash, dê permissão de execução (só precisa fazer isso uma vez):
-
-```
-chmod +x build.sh
-```
+Ajuste os caminhos `C:/freeglut/include` e `C:/freeglut/lib` abaixo para onde o FreeGLUT está instalado na sua máquina.
 
 ### Compilar
 
 ```
-./build.sh
+gcc src/main.c -o jogo.exe -IC:/freeglut/include -LC:/freeglut/lib -lfreeglut -lopengl32 -lglu32 -lwinmm -mwindows
+
 ```
 
 ### Compilar e rodar
 
 ```
-./build.sh run
+gcc src/main.c -o jogo.exe -IC:/freeglut/include -LC:/freeglut/lib -lfreeglut -lopengl32 -lglu32 -lwinmm -mwindows && ./jogo.exe
+
+```
+
+### Rodar
+
+```
+./jogo.exe
+
 ```
 
 ### Limpar o executável gerado
 
 ```
-./build.sh clean
-```
-
-### Compilando manualmente (sem o script)
+rm -f jogo.exe
 
 ```
-gcc src/main.c -o jogo.exe -IC:/freeglut/include -LC:/freeglut/lib -lfreeglut -lopengl32 -lglu32 -lwinmm -mwindows
-./jogo.exe
 
-```
 
 ## Estrutura
 
 ```
 jogo-cg/
 ├── src/main.c       -> código principal
-├── include/          -> headers extras (se precisar)
+├── include/          -> headers extras (ainda não temos nada aqui)
 
 ```
+
+
+
