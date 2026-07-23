@@ -54,7 +54,6 @@ rm -f jogo.exe
 ```
 jogo-cg/
 ├── src/main.c       -> código principal
-<<<<<<< HEAD
 ├── include/          -> headers extras (ainda não temos nada aqui)
 
 ```
