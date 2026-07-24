@@ -5,7 +5,7 @@
 #define ATRITO 1.5f
 #define VEL_MAXIMA 6.0f
 #define VEL_ROTACAO 2.0f
-#define RAIO_COLISAO 0.60f
+#define RAIO_COLISAO 1.f
 
 EstadoDoJogo jogo;
 
@@ -62,7 +62,7 @@ void inicializarJogo() {
 
     for (int i = 0; i < MAX_OBSTACULOS; i++) {
         jogo.obstaculos[i].x = posObstaculos[i][0];
-        jogo.obstaculos[i].y = -1.f;
+        jogo.obstaculos[i].y = -2.5f;
         jogo.obstaculos[i].z = posObstaculos[i][1];
         jogo.obstaculos[i].raio = 3.0f;
         jogo.obstaculos[i].tipo = (int) posObstaculos[i][2]; 

@@ -25,8 +25,9 @@ extern GLuint listasPedra[4];
 void init(void) {
     glClearColor(0.74f, 0.87f, 0.95f, 1.0f);
     glEnable(GL_DEPTH_TEST); 
-
     glEnable(GL_NORMALIZE);
+    glEnable(GL_BLEND); //para tranpareencia da agua
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // A cor de cada objeto vem do seu material (glMaterialfv em objetos3d.c), então GL_COLOR_MATERIAL não é usado aqui 
     GLfloat luzDifusa[]    = {0.8f, 0.8f, 0.8f, 1.0f};
@@ -124,10 +125,10 @@ void display(void) {
 
     gluLookAt(camX, camY, camZ, jogo.jogador.x, jogo.jogador.y + 0.5f, jogo.jogador.z, 0.0f, 1.0f, 0.0f);   
 
-    desenharChao();
     desenharCenario();
     desenharObjetos();
     desenharHUD();
+    desenharChao();
 
     glutSwapBuffers();
 }

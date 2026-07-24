@@ -21,7 +21,7 @@ void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4],
 
 void desenharChao(void) {
     GLfloat ambChao[] = {0.05f, 0.12f, 0.18f, 1.0f};
-    GLfloat difChao[] = {0.1f,  0.35f, 0.55f, 1.0f};
+    GLfloat difChao[] = {0.1f,  0.35f, 0.55f, 0.65f};
     GLfloat espChao[] = {0.9f,  0.9f,  0.9f,  1.0f};
     aplicarMaterial(ambChao, difChao, espChao, 100.0f);
  
@@ -80,7 +80,7 @@ void desenharObjetos(void) {
     for (int i = 0; i < MAX_OBSTACULOS; i++) {
         glPushMatrix();
             glTranslatef(jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z);
-            glScalef(1.5, 1.5, 1.5); 
+            glScalef(1.5, 1.80, 1.5); 
             aplicarMaterial(ambRocha, difRocha, espRocha, 3.0f);
             glCallList(listasPedra[jogo.obstaculos[i].tipo]);  
         glPopMatrix();
