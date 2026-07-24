@@ -18,10 +18,11 @@ typedef struct {
 typedef struct {
     float x, y, z;
     float raio;
+    int tipo;    /* 0, 1, 2 ou 3 - indica qual .obj/display list usar */
 } Obstaculo;
 
-#define MAX_MOEDAS 10
-#define MAX_OBSTACULOS 6
+#define MAX_MOEDAS 14
+#define MAX_OBSTACULOS 15
 
 typedef struct {
     Jogador jogador;

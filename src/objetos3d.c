@@ -5,7 +5,7 @@
 
 GLuint listaBarco = 0;
 GLuint listaMoeda=0;
-GLuint listaPedra=0;
+GLuint listasPedra[4]={0,0,0,0};
 
 extern EstadoDoJogo jogo;
 
@@ -56,7 +56,6 @@ void desenharObjetos(void) {
         glPushMatrix();
             glTranslatef(jogo.moedas[i].x, jogo.moedas[i].y, jogo.moedas[i].z);
             aplicarMaterial(ambMoedas, difMoedas, espMoedas, 35.0f);
-            glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
             glCallList(listaMoeda);
         glPopMatrix();
     }
@@ -68,9 +67,8 @@ void desenharObjetos(void) {
     for (int i = 0; i < MAX_OBSTACULOS; i++) {
         glPushMatrix();
             glTranslatef(jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z);
-            glRotatef(25.0f, 0.3f, 1.0f, 0.2f);
             aplicarMaterial(ambRocha, difRocha, espRocha, 3.0f);
-            glutSolidCube(jogo.obstaculos[i].raio * 1.3f);
+            glCallList(listasPedra[jogo.obstaculos[i].tipo]);  
         glPopMatrix();
     }
 }

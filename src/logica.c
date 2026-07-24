@@ -1,11 +1,11 @@
 #include "logica.h"
 #include <math.h>
 
-#define ACELERACAO 3.0f
+#define ACELERACAO 6.0f
 #define ATRITO 1.5f
 #define VEL_MAXIMA 6.0f
 #define VEL_ROTACAO 2.0f
-#define RAIO_COLISAO 0.50f
+#define RAIO_COLISAO 0.60f
 
 EstadoDoJogo jogo;
 
@@ -16,17 +16,22 @@ void inicializarJogo() {
     jogo.jogador.angulo = 3.14159265f;
     jogo.jogador.velocidade = 0.0f;
 
+    //posicoes por script no blender
     float posMoedas[MAX_MOEDAS][2] = {
-        { 10.0f,  15.0f},
-        {-20.0f,   8.0f},
-        { 25.0f, -10.0f},
-        {-15.0f, -25.0f},
-        {  5.0f,  30.0f},
-        {-30.0f,  -5.0f},
-        { 18.0f,  22.0f},
-        { -8.0f, -18.0f},
-        { 30.0f,   5.0f},
-        {  0.0f, -30.0f}
+        {   -10.54f,    29.88f },
+        {    -0.79f,    21.58f },
+        {   -24.15f,    21.58f },
+        {   -12.88f,    15.04f },
+        {   -20.10f,    34.71f },
+        {    22.71f,    26.55f },
+        {    22.71f,    18.99f },
+        {     9.24f,    11.58f },
+        {    26.50f,    -1.04f },
+        {   -26.45f,     4.04f },
+        {    35.82f,   -25.61f },
+        {    -0.70f,   -25.61f },
+        {     6.60f,   -10.55f },
+        {   -30.64f,   -21.25f },
     };
 
     for (int i = 0; i < MAX_MOEDAS; i++) {
@@ -36,21 +41,31 @@ void inicializarJogo() {
         jogo.moedas[i].raio = 0.6f;
         jogo.moedas[i].ativo = 1;
     }
-
-    float posObstaculos[MAX_OBSTACULOS][2] = {
-        { 15.0f,  10.0f},
-        {-10.0f,  20.0f},
-        { 20.0f, -20.0f},
-        {-25.0f,  10.0f},
-        {  5.0f, -15.0f},
-        {-15.0f,  -8.0f}
+    //posicoes geradas por script no blender
+    float posObstaculos[MAX_OBSTACULOS][3] = {
+        {     0.00f,     0.00f, 0.0f },
+        {    25.41f,   -18.27f, 0.0f },
+        {    25.41f,    29.03f, 0.0f },
+        {   -15.50f,    34.40f, 0.0f },
+        {     2.90f,    25.00f, 1.0f },
+        {    20.00f,     0.00f, 1.0f },
+        {   -20.01f,     4.95f, 1.0f },
+        {    -6.49f,   -27.88f, 1.0f },
+        {    30.54f,   -27.88f, 1.0f },
+        {   -23.19f,   -18.61f, 2.0f },
+        {    12.49f,    35.74f, 2.0f },
+        {    23.88f,    13.99f, 2.0f },
+        {   -28.70f,    21.00f, 3.0f },
+        {     3.13f,   -12.84f, 3.0f },
+        {   -28.70f,   -32.71f, 3.0f },
     };
 
     for (int i = 0; i < MAX_OBSTACULOS; i++) {
         jogo.obstaculos[i].x = posObstaculos[i][0];
-        jogo.obstaculos[i].y = 0.0f;
+        jogo.obstaculos[i].y = -1.f;
         jogo.obstaculos[i].z = posObstaculos[i][1];
-        jogo.obstaculos[i].raio = 1.0f;
+        jogo.obstaculos[i].raio = 3.0f;
+        jogo.obstaculos[i].tipo = (int) posObstaculos[i][2]; 
     }
 
     jogo.moedasColetadas = 0;
