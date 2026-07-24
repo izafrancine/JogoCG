@@ -25,26 +25,35 @@ void init(void) {
     glClearColor(0.74f, 0.87f, 0.95f, 1.0f);
     glEnable(GL_DEPTH_TEST); 
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
 
     // A cor de cada objeto vem do seu material (glMaterialfv em objetos3d.c), então GL_COLOR_MATERIAL não é usado aqui 
-    GLfloat luzAmbiente[]  = {0.25f, 0.25f, 0.25f, 1.0f};
     GLfloat luzDifusa[]    = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat luzEspecular[] = {1.0f, 1.0f, 1.0f, 1.0f};
     GLfloat posicaoLuz[]   = {5.0f, 8.0f, 5.0f, 1.0f}; 
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  luzAmbiente);
     glLightfv(GL_LIGHT0, GL_DIFFUSE,  luzDifusa);
     glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
     glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
+
+    //teste, luz do sol:
+    GLfloat posSol[] = {0.3f, 0.7f, 0.2f, 0.0f};   // w=0.0 -> direção, não posição
+    GLfloat corSol[] = {1.0f, 0.95f, 0.85f, 1.0f}; // luz branca/amarelada
+
+    glLightfv(GL_LIGHT1, GL_POSITION, posSol);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, corSol);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, corSol);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
 
   
     GLfloat luzAmbienteGlobal[] = {0.15f, 0.15f, 0.15f, 1.0f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
     glShadeModel(GL_SMOOTH);
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
     inicializarJogo();
     ultimoTempo = glutGet(GLUT_ELAPSED_TIME);

@@ -55,7 +55,7 @@ void desenharObjetos(void) {
         if (!jogo.moedas[i].ativo) continue;
         glPushMatrix();
             glTranslatef(jogo.moedas[i].x, jogo.moedas[i].y, jogo.moedas[i].z);
-            aplicarMaterial(ambMoedas, difMoedas, espMoedas, 35.0f);
+            aplicarMaterial(ambMoedas, difMoedas, espMoedas, 128.f);
             glCallList(listaMoeda);
         glPopMatrix();
     }
