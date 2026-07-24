@@ -7,6 +7,7 @@ GLuint listaBarco = 0;
 GLuint listaMoeda=0;
 GLuint listaCenario = 0;
 GLuint listasPedra[4]={0,0,0,0};
+GLuint texturaBarco = 0;
 
 extern EstadoDoJogo jogo;
 
@@ -47,16 +48,18 @@ void desenharCenario(){
 
 void desenharObjetos(void) {
     // desenha jogador
-    GLfloat ambJogador[] = {0.25f, 0.15f, 0.07f, 1.0f};
-    GLfloat difJogador[] = {0.55f, 0.35f, 0.18f, 1.0f};
-    GLfloat espJogador[] = {0.08f, 0.08f, 0.08f, 1.0f};
+    GLfloat ambJogador[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat difJogador[] = {1.0f, 1.0f, 1.0f, 1.0f}; //branco por causa da textura
+    GLfloat espJogador[] = {0.5f, 0.5f, 0.5f, 1.0f};
     glPushMatrix();
         glTranslatef(jogo.jogador.x, jogo.jogador.y, jogo.jogador.z);
         glRotatef(-jogo.jogador.angulo * 180.0f / PI, 0.0f, 1.0f, 0.0f); //barco roda com a camera
         glRotatef(180.0f, 0.0f, 1.0f, 0.0f); //coloca frente que estava invertida
         glScalef(0.25f, 0.25f, 0.25f); 
         aplicarMaterial(ambJogador, difJogador, espJogador, 20.0f);
-        glCallList(listaBarco);       
+        glBindTexture(GL_TEXTURE_2D, texturaBarco);
+    glCallList(listaBarco);
+    glBindTexture(GL_TEXTURE_2D, 0);      
  
     glPopMatrix();
 

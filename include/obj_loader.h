@@ -4,5 +4,6 @@
 #include <GL/gl.h>
 
 GLuint carregarOBJ(const char *caminho);
+GLuint carregarTextura(const char *caminho);
 
 #endif

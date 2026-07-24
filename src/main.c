@@ -20,6 +20,7 @@ extern GLuint listaBarco;
 extern GLuint listaMoeda;
 extern GLuint listaCenario;
 extern GLuint listasPedra[4];
+extern GLuint texturaBarco;
 
 
 void init(void) {
@@ -39,7 +40,7 @@ void init(void) {
     glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 
     //teste, luz do sol:
-    GLfloat posSol[] = {0.3f, 0.7f, 0.2f, 0.0f};   // w=0.0 -> direção, não posição
+    GLfloat posSol[] = {0.3f, 0.9f, 0.2f, 0.0f};   // w=0.0 -> direção, não posição
     GLfloat corSol[] = {1.0f, 0.95f, 0.85f, 1.0f}; // luz branca/amarelada
 
     glLightfv(GL_LIGHT1, GL_POSITION, posSol);
@@ -60,13 +61,15 @@ void init(void) {
     inicializarJogo();
     ultimoTempo = glutGet(GLUT_ELAPSED_TIME);
 
-    listaBarco = carregarOBJ("barco.obj");
     listaMoeda = carregarOBJ("moedas.obj");
     listaCenario = carregarOBJ("cenario.obj");
     listasPedra[0] = carregarOBJ("pedra1.obj");
     listasPedra[1] = carregarOBJ("pedra2.obj");
     listasPedra[2] = carregarOBJ("pedra3.obj");
     listasPedra[3] = carregarOBJ("pedra4.obj");
+    listaBarco = carregarOBJ("barco.obj");
+    texturaBarco = carregarTextura("barco_textura.png");
+    glEnable(GL_TEXTURE_2D);
 }
 
 // texto 2D simples na tela 
