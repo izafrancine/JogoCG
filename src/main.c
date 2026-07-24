@@ -18,6 +18,7 @@ int ultimoTempo = 0;
 //importacao de objeto que sao definidos em objetos#d.c
 extern GLuint listaBarco;
 extern GLuint listaMoeda;
+extern GLuint listaCenario;
 extern GLuint listasPedra[4];
 
 
@@ -60,6 +61,7 @@ void init(void) {
 
     listaBarco = carregarOBJ("barco.obj");
     listaMoeda = carregarOBJ("moedas.obj");
+    listaCenario = carregarOBJ("cenario.obj");
     listasPedra[0] = carregarOBJ("pedra1.obj");
     listasPedra[1] = carregarOBJ("pedra2.obj");
     listasPedra[2] = carregarOBJ("pedra3.obj");
@@ -123,6 +125,7 @@ void display(void) {
     gluLookAt(camX, camY, camZ, jogo.jogador.x, jogo.jogador.y + 0.5f, jogo.jogador.z, 0.0f, 1.0f, 0.0f);   
 
     desenharChao();
+    desenharCenario();
     desenharObjetos();
     desenharHUD();
 
@@ -138,7 +141,7 @@ void reshape(int w, int h) {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60.0, (double)w / (double)h, 0.1, 150.0);
+    gluPerspective(60.0, (double)w / (double)h, 0.1, 200.0);
 
     glMatrixMode(GL_MODELVIEW);
 }
