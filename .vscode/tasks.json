@@ -1,0 +1,37 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: gcc.exe arquivo de build ativo",
+			"command": "C:\\MinGW\\bin\\gcc.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g3",
+				"-Wall",
+				"-Wextra",
+				"-I${workspaceFolder}\\include",
+				"${workspaceFolder}\\src\\main.c",
+				"${workspaceFolder}\\src\\logica.c",
+				"${workspaceFolder}\\src\\obj_loader.c",
+				"${workspaceFolder}\\src\\objetos3d.c",
+				"-o",
+				"${workspaceFolder}\\src\\output\\main.exe",
+				"-lfreeglut",
+				"-lopengl32",
+				"-lglu32"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compilador: C:\\MinGW\\bin\\gcc.exe"
+		}
+	]
+}

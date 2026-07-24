@@ -88,11 +88,18 @@ void desenharHUD(void) {
     char buffer[128];
     glColor3f(1.0f, 1.0f, 1.0f);
 
-    snprintf(buffer, sizeof(buffer), "Moedas: %d/%d   Tempo: %.1fs",jogo.moedasColetadas, MAX_MOEDAS, jogo.tempoDecorrido);
+    float tempoRestante = TEMPO_LIMITE - jogo.tempoDecorrido;
+    if (tempoRestante < 0.0f) tempoRestante = 0.0f;
+
+    snprintf(buffer, sizeof(buffer), "Moedas: %d/%d   Tempo restante: %.1fs",jogo.moedasColetadas, MAX_MOEDAS, tempoRestante);
     desenharTexto(20, winHeight - 30, buffer);
 
     if (jogo.estado == VITORIA) {
-        desenharTexto(winWidth / 2 - 60, winHeight / 2, "VOCE VENCEU!");
+        glColor3f(0.2f, 1.0f, 0.2f);
+        desenharTexto(winWidth / 2 - 70, winHeight / 2, "VOCE VENCEU!");
+    } else if (jogo.estado == DERROTA) {
+        glColor3f(1.0f, 0.2f, 0.2f);
+        desenharTexto(winWidth / 2 - 90, winHeight / 2, "TEMPO ESGOTADO!");
     }
 
     glMatrixMode(GL_PROJECTION); 

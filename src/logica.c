@@ -108,6 +108,21 @@ void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
     jogo.jogador.x += sinf(jogo.jogador.angulo) * jogo.jogador.velocidade * dt;
     jogo.jogador.z -= cosf(jogo.jogador.angulo) * jogo.jogador.velocidade * dt;
 
+    if (jogo.jogador.x > LIMITE_MAPA) {
+        jogo.jogador.x = LIMITE_MAPA;
+        jogo.jogador.velocidade *= -0.3f;
+    } else if (jogo.jogador.x < -LIMITE_MAPA) {
+        jogo.jogador.x = -LIMITE_MAPA;
+        jogo.jogador.velocidade *= -0.3f;
+    }
+
+    if (jogo.jogador.z > LIMITE_MAPA) {
+        jogo.jogador.z = LIMITE_MAPA;
+        jogo.jogador.velocidade *= -0.3f;
+    } else if (jogo.jogador.z < -LIMITE_MAPA) {
+        jogo.jogador.z = -LIMITE_MAPA;
+        jogo.jogador.velocidade *= -0.3f;
+    }
 
     //colisao com moedas
     for (int i = 0; i < MAX_MOEDAS; i++) {
@@ -140,5 +155,7 @@ void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
 
     if (jogo.moedasColetadas >= MAX_MOEDAS) {
         jogo.estado = VITORIA;
+    } else if (jogo.tempoDecorrido >= TEMPO_LIMITE) {
+        jogo.estado = DERROTA;
     }
 }

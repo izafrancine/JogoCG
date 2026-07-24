@@ -1,7 +1,7 @@
 #ifndef LOGICA_H
 #define LOGICA_H
 
-typedef enum { JOGANDO, VITORIA } EstadoJogo;
+typedef enum { JOGANDO, VITORIA, DERROTA } EstadoJogo;
 
 typedef struct {
     float x, y, z;
@@ -23,7 +23,8 @@ typedef struct {
 
 #define MAX_MOEDAS 14
 #define MAX_OBSTACULOS 15
-
+#define TEMPO_LIMITE 70.0f
+#define LIMITE_MAPA 39.0f
 typedef struct {
     Jogador jogador;
     Moeda moedas[MAX_MOEDAS];
