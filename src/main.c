@@ -9,6 +9,7 @@
 float camDistancia = 6.0f; //camera segue o jogador em 3a pessoa
 float camAltura = 3.0f;
 
+
 int winWidth = 800, winHeight = 600;
 
 extern EstadoDoJogo jogo;
@@ -69,7 +70,6 @@ void init(void) {
     listasPedra[3] = carregarOBJ("pedra4.obj");
     listaBarco = carregarOBJ("barco.obj");
     texturaBarco = carregarTextura("barco_textura.png");
-    glEnable(GL_TEXTURE_2D);
 }
 
 // texto 2D simples na tela 
@@ -92,7 +92,7 @@ void desenharHUD(void) {
     glLoadIdentity();
 
     char buffer[128];
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, 0.0f);
 
     float tempoRestante = TEMPO_LIMITE - jogo.tempoDecorrido;
     if (tempoRestante < 0.0f) tempoRestante = 0.0f;
@@ -118,21 +118,16 @@ void desenharHUD(void) {
 
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
     float camX = jogo.jogador.x - sinf(jogo.jogador.angulo) * camDistancia;
     float camZ = jogo.jogador.z + cosf(jogo.jogador.angulo) * camDistancia;
     float camY = jogo.jogador.y + camAltura;
-
     gluLookAt(camX, camY, camZ, jogo.jogador.x, jogo.jogador.y + 0.5f, jogo.jogador.z, 0.0f, 1.0f, 0.0f);   
-
     desenharCenario();
     desenharObjetos();
     desenharHUD();
     desenharChao();
-
     glutSwapBuffers();
 }
 

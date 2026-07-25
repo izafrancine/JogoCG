@@ -19,6 +19,18 @@ void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4],
     glMaterialf(GL_FRONT,  GL_SHININESS, brilho);
 }
 
+void aplicarSombra(float alturaChao, float lx, float ly, float lz) {
+    float d = -alturaChao;
+    float dot = ly;
+    GLfloat m[16];
+    m[0]  = dot;         m[4]  = -lx;   m[8]  = 0.0f;  m[12] = lx * alturaChao;
+    m[1]  = 0.0f;        m[5]  = 0.0f;  m[9]  = 0.0f;  m[13] = ly * alturaChao;
+    m[2]  = 0.0f;        m[6]  = -lz;   m[10] = dot;   m[14] = lz * alturaChao;
+    m[3]  = 0.0f;        m[7]  = 0.0f;  m[11] = 0.0f;  m[15] = dot;
+
+    glMultMatrixf(m);
+}
+
 
 void desenharChao(void) {
     GLfloat ambChao[] = {0.05f, 0.12f, 0.18f, 1.0f};
@@ -57,11 +69,30 @@ void desenharObjetos(void) {
         glRotatef(180.0f, 0.0f, 1.0f, 0.0f); //coloca frente que estava invertida
         glScalef(0.25f, 0.25f, 0.25f); 
         aplicarMaterial(ambJogador, difJogador, espJogador, 20.0f);
+        glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texturaBarco);
-    glCallList(listaBarco);
-    glBindTexture(GL_TEXTURE_2D, 0);      
- 
+        glCallList(listaBarco);
+        glBindTexture(GL_TEXTURE_2D, 0);      
+        glDisable(GL_TEXTURE_2D);
     glPopMatrix();
+
+    // sombra do barco
+    glPushMatrix();
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glDepthMask(GL_FALSE);
+        glColor4f(0.0f, 0.0f, 0.0f, 0.35f);
+        aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f); // mesmos valores de posSol[] no main.c
+        glTranslatef(jogo.jogador.x, jogo.jogador.y, jogo.jogador.z);
+        glRotatef(-jogo.jogador.angulo * 180.0f / PI, 0.0f, 1.0f, 0.0f);
+        glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+        glScalef(0.25f, 0.25f, 0.25f);
+        glCallList(listaBarco);
+        glDepthMask(GL_TRUE);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_LIGHTING);
+    glPopMatrix();
+
 
     // moeda (substitui boias) 
     GLfloat ambMoedas[] = {0.25f, 0.15f, 0.01f, 1.0f};
@@ -74,8 +105,21 @@ void desenharObjetos(void) {
             aplicarMaterial(ambMoedas, difMoedas, espMoedas, 128.f);
             glCallList(listaMoeda);
         glPopMatrix();
+
+         // sombra moeda
+        glPushMatrix();
+            glDisable(GL_LIGHTING);
+            glDepthMask(GL_FALSE);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.3f);
+            aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f);
+            glTranslatef(jogo.moedas[i].x, jogo.moedas[i].y, jogo.moedas[i].z);
+            glCallList(listaMoeda);
+            glDepthMask(GL_TRUE);
+            glEnable(GL_LIGHTING);
+        glPopMatrix();
     }
 
+    
     /* Obstáculo (rocha) - pedra fosca, quase sem brilho especular */
     GLfloat ambRocha[] = {0.1f,  0.09f, 0.08f, 1.0f};
     GLfloat difRocha[] = {0.35f, 0.32f, 0.30f, 1.0f};
@@ -86,6 +130,19 @@ void desenharObjetos(void) {
             glScalef(1.5, 1.80, 1.5); 
             aplicarMaterial(ambRocha, difRocha, espRocha, 3.0f);
             glCallList(listasPedra[jogo.obstaculos[i].tipo]);  
+        glPopMatrix();
+
+        // sombra da pedra
+        glPushMatrix();
+            glDisable(GL_LIGHTING);
+            glDepthMask(GL_FALSE);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.3f);
+            aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f);
+            glTranslatef(jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z);
+            glScalef(1.5f, 1.80f, 1.5f);
+            glCallList(listasPedra[jogo.obstaculos[i].tipo]);
+            glDepthMask(GL_TRUE);
+            glEnable(GL_LIGHTING);
         glPopMatrix();
     }
 }

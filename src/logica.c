@@ -108,19 +108,19 @@ void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
     jogo.jogador.x += sinf(jogo.jogador.angulo) * jogo.jogador.velocidade * dt;
     jogo.jogador.z -= cosf(jogo.jogador.angulo) * jogo.jogador.velocidade * dt;
 
-    if (jogo.jogador.x > LIMITE_MAPA) {
-        jogo.jogador.x = LIMITE_MAPA;
+    if (jogo.jogador.x > LIMITE_MAPA_X) {
+        jogo.jogador.x = LIMITE_MAPA_X;
         jogo.jogador.velocidade *= -0.3f;
-    } else if (jogo.jogador.x < -LIMITE_MAPA) {
-        jogo.jogador.x = -LIMITE_MAPA;
+    } else if (jogo.jogador.x < -LIMITE_MAPA_X) {
+        jogo.jogador.x = -LIMITE_MAPA_X;
         jogo.jogador.velocidade *= -0.3f;
     }
 
-    if (jogo.jogador.z > LIMITE_MAPA) {
-        jogo.jogador.z = LIMITE_MAPA;
+    if (jogo.jogador.z > LIMITE_MAPA_Z) {
+        jogo.jogador.z = LIMITE_MAPA_Z;
         jogo.jogador.velocidade *= -0.3f;
-    } else if (jogo.jogador.z < -LIMITE_MAPA) {
-        jogo.jogador.z = -LIMITE_MAPA;
+    } else if (jogo.jogador.z < -LIMITE_MAPA_Z) {
+        jogo.jogador.z = -LIMITE_MAPA_Z;
         jogo.jogador.velocidade *= -0.3f;
     }
 
