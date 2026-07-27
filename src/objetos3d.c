@@ -6,6 +6,7 @@
 GLuint listaBarco = 0;
 GLuint listaMoeda=0;
 GLuint listaCenario = 0;
+GLuint texturaCenario = 0;
 GLuint listasPedra[4]={0,0,0,0};
 GLuint texturaBarco = 0;
 GLuint listaPersonagem = 0;
@@ -37,7 +38,7 @@ void aplicarSombra(float alturaChao, float lx, float ly, float lz) {
 
 
 void desenharChao(void) {
-    GLfloat ambChao[] = {0.05f, 0.12f, 0.18f, 1.0f};
+    GLfloat ambChao[] = {0.05f, 0.10f, 0.15f, 1.0f};
     GLfloat difChao[] = {0.1f,  0.35f, 0.55f, 0.65f};
     GLfloat espChao[] = {0.9f,  0.9f,  0.9f,  1.0f};
     aplicarMaterial(ambChao, difChao, espChao, 100.0f);
@@ -58,14 +59,18 @@ void desenharCenario(){
 
     glPushMatrix();
         glTranslatef(0.0f, 1.22f, 0.0f);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texturaCenario);
         glCallList(listaCenario);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
     //folhas
-    GLfloat ambFolhas[] = {0.02f, 0.12f, 0.04f, 1.0f};
+    GLfloat ambFolhas[] = {0.22f, 0.32f, 0.24f, 1.0f};
     GLfloat difFolhas[] = {0.15f, 0.59f,0.75f, 1.0f};
     GLfloat espFolhas[] = {0.01f, 0.03f, 0.01f, 1.0f};
-    aplicarMaterial(ambFolhas, difFolhas, espFolhas, 6.0f);
+    aplicarMaterial(ambFolhas, difFolhas, espFolhas, 8.0f);
     glPushMatrix();
         glTranslatef(0, -1, 0);
         glCallList(listaFolhagem);
@@ -85,7 +90,7 @@ void desenharCenario(){
 
 void desenharObjetos(void) {
     // desenha jogador
-    GLfloat ambJogador[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat ambJogador[] = {0.35f, 0.35f, 0.35f, 1.0f};
     GLfloat difJogador[] = {1.0f, 1.0f, 1.0f, 1.0f}; //branco por causa da textura
     GLfloat espJogador[] = {0.5f, 0.5f, 0.5f, 1.0f};
     glPushMatrix();
@@ -94,11 +99,13 @@ void desenharObjetos(void) {
         glRotatef(180.0f, 0.0f, 1.0f, 0.0f); //coloca frente que estava invertida
         glScalef(0.25f, 0.25f, 0.25f); 
         aplicarMaterial(ambJogador, difJogador, espJogador, 20.0f);
+
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, texturaBarco);
         glCallList(listaBarco);
         glBindTexture(GL_TEXTURE_2D, 0);      
         glDisable(GL_TEXTURE_2D);
+
         // personagem em cima do barco:
         glPushMatrix();
             glTranslatef(0.0f, 1.5f, -0.3f); 
@@ -134,9 +141,9 @@ void desenharObjetos(void) {
 
 
     // moeda
-    GLfloat ambMoedas[] = {0.25f, 0.15f, 0.01f, 1.0f};
-    GLfloat difMoedas[] = {0.95f, 0.6f,  0.05f, 1.0f};
-    GLfloat espMoedas[] = {0.4f,  0.35f, 0.2f,  1.0f};
+    GLfloat ambMoedas[] = {0.30f, 0.20f, 0.01f, 1.0f};
+    GLfloat difMoedas[] = {0.90f, 0.55f,  0.1f, 1.0f};
+    GLfloat espMoedas[] = {1.f, 0.95f, 0.80f, 1.0f};
     for (int i = 0; i < MAX_MOEDAS; i++) {
         if (!jogo.moedas[i].ativo) continue;
         glPushMatrix();
@@ -160,7 +167,7 @@ void desenharObjetos(void) {
 
     
     // obstáculo (rocha)fosca, quase sem brilho especular 
-    GLfloat ambRocha[] = {0.1f,  0.09f, 0.08f, 1.0f};
+    GLfloat ambRocha[] = {0.19f, 0.17f, 0.14f, 1.0f};
     GLfloat difRocha[] = {0.35f, 0.32f, 0.30f, 1.0f};
     GLfloat espRocha[] = {0.05f, 0.05f, 0.05f, 1.0f};
     for (int i = 0; i < MAX_OBSTACULOS; i++) {
@@ -175,7 +182,7 @@ void desenharObjetos(void) {
         glPushMatrix();
             glDisable(GL_LIGHTING);
             glDepthMask(GL_FALSE);
-            glColor4f(0.0f, 0.0f, 0.0f, 0.3f);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
             aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f);
             glTranslatef(jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z);
             glScalef(1.5f, 1.80f, 1.5f);

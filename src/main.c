@@ -20,7 +20,8 @@ int ultimoTempo = 0;
 extern GLuint listaBarco;
 extern GLuint listaMoeda;
 extern GLuint listaCenario;
-extern GLuint listasPedra[4];
+extern GLuint texturaCenario;
+extern GLuint listasPedra[4];  
 extern GLuint texturaBarco;
 extern GLuint listaPersonagem;
 extern GLuint texturaPersonagem;
@@ -32,22 +33,31 @@ void init(void) {
     glClearColor(0.74f, 0.87f, 0.95f, 1.0f);
     glEnable(GL_DEPTH_TEST); 
     glEnable(GL_NORMALIZE);
+    glEnable(GL_LIGHTING);
+
     glEnable(GL_BLEND); //para tranpareencia da agua
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //teste, luz do sol:
+    // luz do sol:
     GLfloat posSol[] = {0.3f, 0.9f, 0.2f, 0.0f};   // w=0.0 -> direção, não posição
     GLfloat corSol[] = {1.0f, 0.95f, 0.85f, 1.0f}; // luz branca/amarelada
 
-    glLightfv(GL_LIGHT1, GL_POSITION, posSol);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, corSol);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, corSol);
+    glLightfv(GL_LIGHT0, GL_POSITION, posSol);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, corSol);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, corSol);
 
-    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    //luz do ceu
+    GLfloat posPreenchimento[] = {-0.3f, 0.5f, -0.2f, 0.0f};  // oposta ao sol
+    GLfloat corPreenchimento[] = {0.2f, 0.25f, 0.50f, 1.0f};    // fraca, azulada 
+
+    glLightfv(GL_LIGHT1, GL_POSITION, posPreenchimento);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, corPreenchimento);
     glEnable(GL_LIGHT1);
 
   
-    GLfloat luzAmbienteGlobal[] = {0.5f, 0.5f, 0.55f, 1.0f};
+    GLfloat luzAmbienteGlobal[] = {0.4f, 0.4f, 0.5f, 1.0f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
     glShadeModel(GL_SMOOTH);
@@ -56,18 +66,19 @@ void init(void) {
     inicializarJogo();
     ultimoTempo = glutGet(GLUT_ELAPSED_TIME);
 
-    listaMoeda = carregarOBJ("moedas.obj");
-    listaCenario = carregarOBJ("cenario.obj");
-    listaFolhagem = carregarOBJ ("folhagem.obj");
-    listaTronco = carregarOBJ ("troncos.obj");
-    listasPedra[0] = carregarOBJ("pedra1.obj");
-    listasPedra[1] = carregarOBJ("pedra2.obj");
-    listasPedra[2] = carregarOBJ("pedra3.obj");
-    listasPedra[3] = carregarOBJ("pedra4.obj");
-    listaBarco = carregarOBJ("barco.obj");
-    texturaBarco = carregarTextura("barco_textura.png");
-    listaPersonagem = carregarOBJ("personagem.obj");
-    texturaPersonagem = carregarTextura("colormap.png");
+    listaMoeda = carregarOBJ("assets/moedas.obj");
+    listaCenario = carregarOBJ("assets/cenario.obj");
+    texturaCenario = carregarTextura("assets/grama_textura.png"); 
+    listaFolhagem = carregarOBJ ("assets/folhagem.obj");
+    listaTronco = carregarOBJ ("assets/troncos.obj");
+    listasPedra[0] = carregarOBJ("assets/pedra1.obj");
+    listasPedra[1] = carregarOBJ("assets/pedra2.obj");
+    listasPedra[2] = carregarOBJ("assets/pedra3.obj");
+    listasPedra[3] = carregarOBJ("assets/pedra4.obj");
+    listaBarco = carregarOBJ("assets/barco.obj");
+    texturaBarco = carregarTextura("assets/barco_textura.png");
+    listaPersonagem = carregarOBJ("assets/personagem.obj");
+    texturaPersonagem = carregarTextura("assets/colormap.png");
     
 }
 
