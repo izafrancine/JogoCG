@@ -24,6 +24,8 @@ extern GLuint listasPedra[4];
 extern GLuint texturaBarco;
 extern GLuint listaPersonagem;
 extern GLuint texturaPersonagem;
+extern GLuint listaTronco;
+extern GLuint listaFolhagem;
 
 
 void init(void) {
@@ -56,6 +58,8 @@ void init(void) {
 
     listaMoeda = carregarOBJ("moedas.obj");
     listaCenario = carregarOBJ("cenario.obj");
+    listaFolhagem = carregarOBJ ("folhagem.obj");
+    listaTronco = carregarOBJ ("troncos.obj");
     listasPedra[0] = carregarOBJ("pedra1.obj");
     listasPedra[1] = carregarOBJ("pedra2.obj");
     listasPedra[2] = carregarOBJ("pedra3.obj");
@@ -64,6 +68,7 @@ void init(void) {
     texturaBarco = carregarTextura("barco_textura.png");
     listaPersonagem = carregarOBJ("personagem.obj");
     texturaPersonagem = carregarTextura("colormap.png");
+    
 }
 
 // texto 2D simples na tela
