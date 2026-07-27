@@ -10,6 +10,8 @@ GLuint listasPedra[4]={0,0,0,0};
 GLuint texturaBarco = 0;
 GLuint listaPersonagem = 0;
 GLuint texturaPersonagem = 0;
+GLuint listaTronco = 0;
+GLuint listaFolhagem = 0;
 
 extern EstadoDoJogo jogo;
 
@@ -48,6 +50,7 @@ void desenharChao(void) {
 }
 
 void desenharCenario(){
+    //piso
     GLfloat ambGrama[] = {0.03f, 0.08f, 0.02f, 1.0f};
     GLfloat difGrama[] = {0.10f, 0.32f, 0.08f, 1.0f};
     GLfloat espGrama[] = {0.04f, 0.04f, 0.04f, 1.0f};
@@ -56,6 +59,26 @@ void desenharCenario(){
     glPushMatrix();
         glTranslatef(0.0f, 1.22f, 0.0f);
         glCallList(listaCenario);
+    glPopMatrix();
+
+    //folhas
+    GLfloat ambFolhas[] = {0.02f, 0.12f, 0.04f, 1.0f};
+    GLfloat difFolhas[] = {0.15f, 0.59f,0.75f, 1.0f};
+    GLfloat espFolhas[] = {0.01f, 0.03f, 0.01f, 1.0f};
+    aplicarMaterial(ambFolhas, difFolhas, espFolhas, 6.0f);
+    glPushMatrix();
+        glTranslatef(0, -1, 0);
+        glCallList(listaFolhagem);
+    glPopMatrix();
+
+    //troncos
+    GLfloat ambTronco[] = {0.10f, 0.04f, 0.015f, 1.0f};
+    GLfloat difTronco[] = {0.45f, 0.18f, 0.05f, 1.0f};
+    GLfloat espTronco[] = {0.02f, 0.015f, 0.01f, 1.0f};
+    aplicarMaterial(ambTronco, difTronco, espTronco, 4.0f);
+    glPushMatrix();
+        glTranslatef(0, -1, 0);
+        glCallList(listaTronco);
     glPopMatrix();
 }
 
@@ -110,7 +133,7 @@ void desenharObjetos(void) {
     glPopMatrix();
 
 
-    // moeda (substitui boias) 
+    // moeda
     GLfloat ambMoedas[] = {0.25f, 0.15f, 0.01f, 1.0f};
     GLfloat difMoedas[] = {0.95f, 0.6f,  0.05f, 1.0f};
     GLfloat espMoedas[] = {0.4f,  0.35f, 0.2f,  1.0f};
@@ -136,7 +159,7 @@ void desenharObjetos(void) {
     }
 
     
-    /* Obstáculo (rocha) - pedra fosca, quase sem brilho especular */
+    // obstáculo (rocha)fosca, quase sem brilho especular 
     GLfloat ambRocha[] = {0.1f,  0.09f, 0.08f, 1.0f};
     GLfloat difRocha[] = {0.35f, 0.32f, 0.30f, 1.0f};
     GLfloat espRocha[] = {0.05f, 0.05f, 0.05f, 1.0f};
