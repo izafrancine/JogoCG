@@ -28,7 +28,6 @@ extern GLuint texturaPersonagem;
 extern GLuint listaTronco;
 extern GLuint listaFolhagem;
 
-
 void init(void) {
     glClearColor(0.74f, 0.87f, 0.95f, 1.0f);
     glEnable(GL_DEPTH_TEST); 

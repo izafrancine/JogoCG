@@ -14,6 +14,7 @@ GLuint texturaPersonagem = 0;
 GLuint listaTronco = 0;
 GLuint listaFolhagem = 0;
 
+
 extern EstadoDoJogo jogo;
 
 void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4],
@@ -52,8 +53,8 @@ void desenharChao(void) {
 
 void desenharCenario(){
     //piso
-    GLfloat ambGrama[] = {0.03f, 0.08f, 0.02f, 1.0f};
-    GLfloat difGrama[] = {0.10f, 0.32f, 0.08f, 1.0f};
+    GLfloat ambGrama[] = {0.17f, 0.22f, 0.56f, 1.0f};
+    GLfloat difGrama[] = {0.15f, 0.37f, 0.13f, 1.0f};
     GLfloat espGrama[] = {0.04f, 0.04f, 0.04f, 1.0f};
     aplicarMaterial(ambGrama, difGrama, espGrama, 8.0f);
 
