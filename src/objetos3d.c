@@ -8,6 +8,8 @@ GLuint listaMoeda=0;
 GLuint listaCenario = 0;
 GLuint listasPedra[4]={0,0,0,0};
 GLuint texturaBarco = 0;
+GLuint listaPersonagem = 0;
+GLuint texturaPersonagem = 0;
 
 extern EstadoDoJogo jogo;
 
@@ -74,6 +76,20 @@ void desenharObjetos(void) {
         glCallList(listaBarco);
         glBindTexture(GL_TEXTURE_2D, 0);      
         glDisable(GL_TEXTURE_2D);
+        // personagem em cima do barco:
+        glPushMatrix();
+            glTranslatef(0.0f, 1.5f, -0.3f); 
+            glScalef(4.00f, 4.00f, 4.00f);
+            GLfloat ambPers[] = {1.0f, 1.0f, 1.0f, 1.0f};
+            GLfloat difPers[] = {1.0f, 1.0f, 1.0f, 1.0f};
+            GLfloat espPers[] = {0.3f, 0.3f, 0.3f, 1.0f};
+            aplicarMaterial(ambPers, difPers, espPers, 15.0f);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, texturaPersonagem);
+            glCallList(listaPersonagem);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
     glPopMatrix();
 
     // sombra do barco

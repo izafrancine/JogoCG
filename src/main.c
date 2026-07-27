@@ -22,6 +22,8 @@ extern GLuint listaMoeda;
 extern GLuint listaCenario;
 extern GLuint listasPedra[4];
 extern GLuint texturaBarco;
+extern GLuint listaPersonagem;
+extern GLuint texturaPersonagem;
 
 
 void init(void) {
@@ -30,15 +32,6 @@ void init(void) {
     glEnable(GL_NORMALIZE);
     glEnable(GL_BLEND); //para tranpareencia da agua
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // A cor de cada objeto vem do seu material (glMaterialfv em objetos3d.c), então GL_COLOR_MATERIAL não é usado aqui 
-    GLfloat luzDifusa[]    = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat luzEspecular[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat posicaoLuz[]   = {5.0f, 8.0f, 5.0f, 1.0f}; 
-
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  luzDifusa);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
-    glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 
     //teste, luz do sol:
     GLfloat posSol[] = {0.3f, 0.9f, 0.2f, 0.0f};   // w=0.0 -> direção, não posição
@@ -49,11 +42,10 @@ void init(void) {
     glLightfv(GL_LIGHT1, GL_SPECULAR, corSol);
 
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 
   
-    GLfloat luzAmbienteGlobal[] = {0.15f, 0.15f, 0.15f, 1.0f};
+    GLfloat luzAmbienteGlobal[] = {0.5f, 0.5f, 0.55f, 1.0f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
     glShadeModel(GL_SMOOTH);
@@ -70,6 +62,8 @@ void init(void) {
     listasPedra[3] = carregarOBJ("pedra4.obj");
     listaBarco = carregarOBJ("barco.obj");
     texturaBarco = carregarTextura("barco_textura.png");
+    listaPersonagem = carregarOBJ("personagem.obj");
+    texturaPersonagem = carregarTextura("colormap.png");
 }
 
 // texto 2D simples na tela 
