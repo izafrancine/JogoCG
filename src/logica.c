@@ -10,13 +10,12 @@
 EstadoDoJogo jogo;
 
 void inicializarJogo() {
-    jogo.jogador.x = 0.0f;
-    jogo.jogador.y = 0.0f;
-    jogo.jogador.z = 30.0f;   
+    jogo.jogador.x = 0;
+    jogo.jogador.y = 0;
+    jogo.jogador.z = 30;   
     jogo.jogador.angulo = 0;
-    jogo.jogador.velocidade = 0.0f;
+    jogo.jogador.velocidade = 0;
 
-    //posicoes por script no blender
     float posMoedas[MAX_MOEDAS][2] = {
         {   -10.54f,    29.88f },
         {    -0.79f,    21.58f },
@@ -41,7 +40,7 @@ void inicializarJogo() {
         jogo.moedas[i].raio = 0.6f;
         jogo.moedas[i].ativo = 1;
     }
-    //posicoes geradas por script no blender
+
     float posObstaculos[MAX_OBSTACULOS][3] = {
         {     0.00f,     0.00f, 0.0f },
         {    25.41f,   -18.27f, 0.0f },
@@ -69,11 +68,10 @@ void inicializarJogo() {
     }
 
     jogo.moedasColetadas = 0;
-    jogo.tempoDecorrido = 0.0f;
+    jogo.tempoDecorrido = 0;
     jogo.estado = JOGANDO;
 }
 
-// duas esferas colidem quando a distância entre os seus centros é menor ou igual a soma dos seus raios
 int testarColisaoEsferas(float x1, float y1, float z1, float r1,float x2, float y2, float z2, float r2) {
     float dx = x1 - x2, dy = y1 - y2, dz = z1 - z2;
     float distQuadrada = dx * dx + dy * dy + dz * dz;
@@ -140,23 +138,18 @@ void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
         }
     }
 
-    // colisao com obstaculos jogador quica para tras 
+    // colisao com obstaculos 
     for (int i = 0; i < MAX_OBSTACULOS; i++) {
         if (testarColisaoEsferas(jogo.jogador.x, jogo.jogador.y, jogo.jogador.z, RAIO_COLISAO,
             jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z,
             jogo.obstaculos[i].raio)) {
 
-            // empurra o barco: 
-            float dx = jogo.jogador.x - jogo.obstaculos[i].x;
-            float dz = jogo.jogador.z - jogo.obstaculos[i].z; //vetor da peddra ao jogador
-            float dist = sqrtf(dx*dx + dz*dz);
-            float sobreposicao = (RAIO_COLISAO  + jogo.obstaculos[i].raio) - dist;
-            if (sobreposicao > 0 && dist > 0.0001f) {
-                //normaliza o vetor para obter so a direcao ate a pedra 
-                jogo.jogador.x += (dx / dist) * sobreposicao;
-                jogo.jogador.z += (dz / dist) * sobreposicao;
-                jogo.jogador.velocidade *= -0.4f;
-            }
+            float empurraoFixo = 0.4f; //unidades de distancia que recua por frame
+            jogo.jogador.x -= sinf(jogo.jogador.angulo) * empurraoFixo; 
+            jogo.jogador.z += cosf(jogo.jogador.angulo) * empurraoFixo;
+        
+            //velocidade negativa faz ele zerar com logica ja existente do atrito
+            jogo.jogador.velocidade = -2.0f;
         }
     }
 

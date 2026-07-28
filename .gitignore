@@ -1,2 +1,31 @@
-jogo.exe
+# Executáveis compilados
 *.exe
+*.out
+
+# Arquivos objeto e intermediários de compilação
+*.o
+*.a
+*.lib
+*.dll
+*.so
+
+# Arquivos de projeto de IDEs
+.vscode/
+.idea/
+*.cbp
+*.layout
+*.depend
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Arquivos temporários do sistema
+*~
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+.vscode/tasks.json

@@ -99,9 +99,7 @@ void display() {
     float camY = jogo.jogador.y + camAltura;
     gluLookAt(camX, camY, camZ, jogo.jogador.x, jogo.jogador.y + 0.5f, jogo.jogador.z, 0.0f, 1.0f, 0.0f);
     
-    GLfloat posLuzBarco[] = {
-        jogo.jogador.x, jogo.jogador.y + 1, jogo.jogador.z, 1.0f   // w=1.0 -> posição local
-    };
+    GLfloat posLuzBarco[] = {jogo.jogador.x, jogo.jogador.y + 1, jogo.jogador.z, 1.0f};
     glLightfv(GL_LIGHT2, GL_POSITION, posLuzBarco);
 
     desenharCenario();
