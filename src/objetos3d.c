@@ -141,7 +141,7 @@ void desenharObjetos(void) {
 
 
     // moeda
-    GLfloat ambMoedas[] = {0.30f, 0.20f, 0.01f, 1.0f};
+    GLfloat ambMoedas[] = {0.35f, 0.25f, 0.015f, 1.0f};
     GLfloat difMoedas[] = {0.90f, 0.55f,  0.1f, 1.0f};
     GLfloat espMoedas[] = {1.f, 0.95f, 0.80f, 1.0f};
     for (int i = 0; i < MAX_MOEDAS; i++) {
@@ -156,7 +156,7 @@ void desenharObjetos(void) {
         glPushMatrix();
             glDisable(GL_LIGHTING);
             glDepthMask(GL_FALSE);
-            glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
             aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f);
             glTranslatef(jogo.moedas[i].x, jogo.moedas[i].y, jogo.moedas[i].z);
             glCallList(listaMoeda);
@@ -182,7 +182,7 @@ void desenharObjetos(void) {
         glPushMatrix();
             glDisable(GL_LIGHTING);
             glDepthMask(GL_FALSE);
-            glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
             aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f);
             glTranslatef(jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z);
             glScalef(1.5f, 1.80f, 1.5f);

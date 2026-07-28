@@ -49,16 +49,24 @@ void init() {
 
     glEnable(GL_LIGHT0);
 
-    //luz do ceu
+    //luz do ceu (w=0) 
     GLfloat posPreenchimento[] = {-0.3f, 0.5f, -0.2f, 0.0f}; // oposta ao sol
-    GLfloat corPreenchimento[] = {0.2f, 0.25f, 0.50f, 1.0f}; // azulada 
+    GLfloat corPreenchimento[] = {0.2f, 0.25f, 0.53f, 1.0f}; // azulada 
 
     glLightfv(GL_LIGHT1, GL_POSITION, posPreenchimento);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, corPreenchimento);
     glEnable(GL_LIGHT1);
 
+    // luz do barco (w=1) 
+    GLfloat corLuzBarco[] = {1.0f, 0.9f, 0.6f, 1.0f};  // tom amarelado
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, corLuzBarco);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, corLuzBarco);
+    glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.80f);   // atenuação
+    glEnable(GL_LIGHT2);
+
     //iluminação global da cena
-    GLfloat luzAmbienteGlobal[] = {0.4f, 0.4f, 0.5f, 1.0f};
+    GLfloat luzAmbienteGlobal[] = {0.5f, 0.5f, 0.55f, 1.0f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
 
@@ -89,7 +97,12 @@ void display() {
     float camX = jogo.jogador.x - sinf(jogo.jogador.angulo) * camDistancia;
     float camZ = jogo.jogador.z + cosf(jogo.jogador.angulo) * camDistancia;
     float camY = jogo.jogador.y + camAltura;
-    gluLookAt(camX, camY, camZ, jogo.jogador.x, jogo.jogador.y + 0.5f, jogo.jogador.z, 0.0f, 1.0f, 0.0f);  
+    gluLookAt(camX, camY, camZ, jogo.jogador.x, jogo.jogador.y + 0.5f, jogo.jogador.z, 0.0f, 1.0f, 0.0f);
+    
+    GLfloat posLuzBarco[] = {
+        jogo.jogador.x, jogo.jogador.y + 1, jogo.jogador.z, 1.0f   // w=1.0 -> posição local
+    };
+    glLightfv(GL_LIGHT2, GL_POSITION, posLuzBarco);
 
     desenharCenario();
     desenharObjetos();
