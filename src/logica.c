@@ -1,7 +1,7 @@
 #include "logica.h"
 #include <math.h>
 
-#define ACELERACAO 6.0f //unidades por seg^2
+#define ACELERACAO 3.0f //unidades por seg^2
 #define ATRITO 1.5f // desacelera (tecla solta)
 #define VEL_MAXIMA 6.0f //unidades por seg
 #define VEL_ROTACAO 2.0f //rad por segundos
