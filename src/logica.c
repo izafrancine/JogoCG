@@ -1,11 +1,11 @@
 #include "logica.h"
 #include <math.h>
 
-#define ACELERACAO 6.0f
-#define ATRITO 1.5f
-#define VEL_MAXIMA 6.0f
-#define VEL_ROTACAO 2.0f
-#define RAIO_COLISAO 1.f
+#define ACELERACAO 6.0f //unidades por seg^2
+#define ATRITO 1.5f // desacelera (tecla solta)
+#define VEL_MAXIMA 6.0f //unidades por seg
+#define VEL_ROTACAO 2.0f //rad por segundos
+#define RAIO_COLISAO 1.f // teste de atrito
 
 EstadoDoJogo jogo;
 
@@ -13,7 +13,7 @@ void inicializarJogo() {
     jogo.jogador.x = 0.0f;
     jogo.jogador.y = 0.0f;
     jogo.jogador.z = 30.0f;   
-    jogo.jogador.angulo = 3.14159265f;
+    jogo.jogador.angulo = 0;
     jogo.jogador.velocidade = 0.0f;
 
     //posicoes por script no blender
@@ -73,6 +73,7 @@ void inicializarJogo() {
     jogo.estado = JOGANDO;
 }
 
+// duas esferas colidem quando a distância entre os seus centros é menor ou igual a soma dos seus raios
 int testarColisaoEsferas(float x1, float y1, float z1, float r1,float x2, float y2, float z2, float r2) {
     float dx = x1 - x2, dy = y1 - y2, dz = z1 - z2;
     float distQuadrada = dx * dx + dy * dy + dz * dz;
@@ -81,20 +82,25 @@ int testarColisaoEsferas(float x1, float y1, float z1, float r1,float x2, float 
 }
 
 void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
+    // acelerando = 1 se a tecla de acelerar (w) esta pressionada
+    // freando = 1 se a tecla de ré (s) esta pressionada
+    // direcao = -1 (vira esquerda), 0 (reto), +1 (vira direita)
+
     if (jogo.estado != JOGANDO) return;
 
     jogo.tempoDecorrido += dt;
 
-    jogo.jogador.angulo += direcao * VEL_ROTACAO * dt;
+    //atualiza oangulo do barco: direcao (esq ou dir) rad por segundos e segundos
+    jogo.jogador.angulo += direcao * VEL_ROTACAO * dt; 
 
     if (acelerando) {
         jogo.jogador.velocidade += ACELERACAO * dt;
     } else if (freando) {
         jogo.jogador.velocidade -= ACELERACAO * dt;
-    } else {
-        if (jogo.jogador.velocidade > 0.0f) {
-            jogo.jogador.velocidade -= ATRITO * dt;
-            if (jogo.jogador.velocidade < 0.0f) jogo.jogador.velocidade = 0.0f;
+    } else { //teclas soltas
+        if (jogo.jogador.velocidade > 0.0f) { 
+            jogo.jogador.velocidade -= ATRITO * dt; // diminui velocidade ate parar
+            if (jogo.jogador.velocidade < 0.0f) jogo.jogador.velocidade = 0.0f; //evita que ele ande de ré
         } else if (jogo.jogador.velocidade < 0.0f) {
             jogo.jogador.velocidade += ATRITO * dt;
             if (jogo.jogador.velocidade > 0.0f) jogo.jogador.velocidade = 0.0f;
@@ -104,7 +110,7 @@ void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
     if (jogo.jogador.velocidade > VEL_MAXIMA) jogo.jogador.velocidade = VEL_MAXIMA;
     if (jogo.jogador.velocidade < -VEL_MAXIMA / 2.0f) jogo.jogador.velocidade = -VEL_MAXIMA / 2.0f;
 
-    //atualiza pos do jogador
+    //atualiza pos do jogador 
     jogo.jogador.x += sinf(jogo.jogador.angulo) * jogo.jogador.velocidade * dt;
     jogo.jogador.z -= cosf(jogo.jogador.angulo) * jogo.jogador.velocidade * dt;
 
@@ -134,18 +140,19 @@ void atualizarJogo(float dt, int acelerando, int freando, float direcao) {
         }
     }
 
-    // colisao com obstaculos, o jogador "quica" para tras 
+    // colisao com obstaculos jogador quica para tras 
     for (int i = 0; i < MAX_OBSTACULOS; i++) {
         if (testarColisaoEsferas(jogo.jogador.x, jogo.jogador.y, jogo.jogador.z, RAIO_COLISAO,
             jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z,
             jogo.obstaculos[i].raio)) {
 
-            // empurra o barco
+            // empurra o barco: 
             float dx = jogo.jogador.x - jogo.obstaculos[i].x;
-            float dz = jogo.jogador.z - jogo.obstaculos[i].z;
+            float dz = jogo.jogador.z - jogo.obstaculos[i].z; //vetor da peddra ao jogador
             float dist = sqrtf(dx*dx + dz*dz);
-            float sobreposicao = (0.5f + jogo.obstaculos[i].raio) - dist;
+            float sobreposicao = (RAIO_COLISAO  + jogo.obstaculos[i].raio) - dist;
             if (sobreposicao > 0 && dist > 0.0001f) {
+                //normaliza o vetor para obter so a direcao ate a pedra 
                 jogo.jogador.x += (dx / dist) * sobreposicao;
                 jogo.jogador.z += (dz / dist) * sobreposicao;
                 jogo.jogador.velocidade *= -0.4f;

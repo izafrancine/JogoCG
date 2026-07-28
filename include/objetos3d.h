@@ -4,9 +4,9 @@
 #include <GL/freeglut.h>
 
 void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4], GLfloat especular[4], GLfloat brilho);
-void desenharChao(void);
+void desenharChao();
 void desenharCenario();
-void desenharObjetos(void);
+void desenharObjetos();
 void aplicarSombra(float alturaChao, float lx, float ly, float lz);
 
 #endif

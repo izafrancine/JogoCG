@@ -17,8 +17,7 @@ GLuint listaFolhagem = 0;
 
 extern EstadoDoJogo jogo;
 
-void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4],
-                      GLfloat especular[4], GLfloat brilho) {
+void aplicarMaterial(GLfloat ambiente[4], GLfloat difusa[4],GLfloat especular[4], GLfloat brilho) {
     glMaterialfv(GL_FRONT, GL_AMBIENT,   ambiente);
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   difusa);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  especular);
@@ -41,7 +40,7 @@ void aplicarSombra(float alturaChao, float lx, float ly, float lz) {
 void desenharChao(void) {
     GLfloat ambChao[] = {0.05f, 0.10f, 0.15f, 1.0f};
     GLfloat difChao[] = {0.1f,  0.35f, 0.55f, 0.65f};
-    GLfloat espChao[] = {0.9f,  0.9f,  0.9f,  1.0f};
+    GLfloat espChao[] = {1.f,  1.f,  0.9f,  1.0f};
     aplicarMaterial(ambChao, difChao, espChao, 100.0f);
  
     glPushMatrix();
@@ -52,7 +51,7 @@ void desenharChao(void) {
 }
 
 void desenharCenario(){
-    //piso
+    //grama
     GLfloat ambGrama[] = {0.17f, 0.22f, 0.56f, 1.0f};
     GLfloat difGrama[] = {0.15f, 0.37f, 0.13f, 1.0f};
     GLfloat espGrama[] = {0.04f, 0.04f, 0.04f, 1.0f};
@@ -78,7 +77,7 @@ void desenharCenario(){
     glPopMatrix();
 
     //troncos
-    GLfloat ambTronco[] = {0.10f, 0.04f, 0.015f, 1.0f};
+    GLfloat ambTronco[] = {0.20f, 0.14f, 0.02f, 1.0f};
     GLfloat difTronco[] = {0.45f, 0.18f, 0.05f, 1.0f};
     GLfloat espTronco[] = {0.02f, 0.015f, 0.01f, 1.0f};
     aplicarMaterial(ambTronco, difTronco, espTronco, 4.0f);
@@ -157,7 +156,7 @@ void desenharObjetos(void) {
         glPushMatrix();
             glDisable(GL_LIGHTING);
             glDepthMask(GL_FALSE);
-            glColor4f(0.0f, 0.0f, 0.0f, 0.3f);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
             aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f);
             glTranslatef(jogo.moedas[i].x, jogo.moedas[i].y, jogo.moedas[i].z);
             glCallList(listaMoeda);
@@ -167,7 +166,7 @@ void desenharObjetos(void) {
     }
 
     
-    // obstáculo (rocha)fosca, quase sem brilho especular 
+    // obstáculo (rocha)
     GLfloat ambRocha[] = {0.19f, 0.17f, 0.14f, 1.0f};
     GLfloat difRocha[] = {0.35f, 0.32f, 0.30f, 1.0f};
     GLfloat espRocha[] = {0.05f, 0.05f, 0.05f, 1.0f};
@@ -183,7 +182,7 @@ void desenharObjetos(void) {
         glPushMatrix();
             glDisable(GL_LIGHTING);
             glDepthMask(GL_FALSE);
-            glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
             aplicarSombra(-0.94f, 0.3f, 0.9f, 0.2f);
             glTranslatef(jogo.obstaculos[i].x, jogo.obstaculos[i].y, jogo.obstaculos[i].z);
             glScalef(1.5f, 1.80f, 1.5f);
